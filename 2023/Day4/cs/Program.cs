@@ -79,6 +79,19 @@ namespace AOC_Day4
                 Card temp = new Card(int.Parse($"{lines[i][5]}{lines[i][6]}{lines[i][7]}"), winN, ownN);
                 list.Add(temp);
             }
+
+            for (int k = 0; k < list.Count; k++)
+            {
+                for (int l = 0; l < list[k].win_nums.Count; l++)
+                {
+                    for (int m = 0; m < list[k].own_nums.Count; m++)
+                    {
+                        if (list[k].win_nums[l] == list[k].own_nums[m])
+                            list[k].matches++;
+                    }
+                }
+            }
+
             return list;
         }
         public static void part1(List<Card> list)
@@ -107,36 +120,25 @@ namespace AOC_Day4
         public static int CopyCounts(List<Card> list, int index)
         {
             int result = 0;
-            for (int k = 1; k < list[index].matches + 1; k++)
-                {
-                    if (index + k < list.Count)
-                        result += CopyCounts(list, index + k);
-                }
+            result += list[index].matches;
+            for (int k = 0; k < list[index].matches; k++)
+            {
+                if (index + k < list.Count)
+                    result += CopyCounts(list, index + k + 1);
+            }
             return result;
         }
         public static void part2(List<Card> list)
         {
-            for (int i = 0; i < list.Count; i++)
-            {
-                for (int j = 0; j < list[i].win_nums.Count; j++)
-                {
-                    for (int k = 0; k < list[i].own_nums.Count; k++)
-                    {
-                        if (list[i].win_nums[j] == list[i].own_nums[k])
-                            list[i].matches++;
-                    }
-                }
-            }
-
-
             int result = 0;
             for (int l = 0; l < list.Count; l++)
             {
                 System.Console.WriteLine("list l: " + l);
-                for (int k = 1; k < list[l].matches + 1; k++)
+                result += 1 + list[l].matches;
+                for (int k = 0; k < list[l].matches; k++)
                 {
                     if (l + k < list.Count)
-                        result += CopyCounts(list, l + k);
+                        result += CopyCounts(list, l + k + 1);
                 }
             }
             System.Console.WriteLine(result);
@@ -146,12 +148,9 @@ namespace AOC_Day4
         {
             List<Card> input = read();
             // for (int i = 0; i < input.Count; i++)
-            // {
             //     System.Console.WriteLine(input[i].ToString());
-            // }
             // part1(input);
             part2(input);
-
         }
     }
 }

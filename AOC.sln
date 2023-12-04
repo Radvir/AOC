@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2023", "2023", "{DB31079E-47F3-4FE0-B1D2-809D415DBE92}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Day4", "Day4", "{5447AB21-83AC-49AE-991D-8551D79065DB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cs", "2023\Day4\cs\cs.csproj", "{10F7EB3C-8E3E-4E9C-85D4-4A8FB7AD8A5E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10F7EB3C-8E3E-4E9C-85D4-4A8FB7AD8A5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10F7EB3C-8E3E-4E9C-85D4-4A8FB7AD8A5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10F7EB3C-8E3E-4E9C-85D4-4A8FB7AD8A5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10F7EB3C-8E3E-4E9C-85D4-4A8FB7AD8A5E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5447AB21-83AC-49AE-991D-8551D79065DB} = {DB31079E-47F3-4FE0-B1D2-809D415DBE92}
+		{10F7EB3C-8E3E-4E9C-85D4-4A8FB7AD8A5E} = {5447AB21-83AC-49AE-991D-8551D79065DB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D55D5D91-76FB-4919-87EB-D68F6813577D}
+	EndGlobalSection
+EndGlobal
