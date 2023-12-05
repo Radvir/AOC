@@ -13,21 +13,21 @@ namespace AOC_Day4
 {
     public class TypeChange
     {
-        public int FirstStart;
-        public int SecondStart;
+        public int DestinationStart;
+        public int SourceStart;
         public int range;
 
-        public TypeChange(int firstStart, int secondStart, int range)
+        public TypeChange(int DestinationStart, int SourceStart, int range)
         {
-            this.FirstStart = firstStart;
-            this.SecondStart = secondStart;
+            this.DestinationStart = DestinationStart;
+            this.SourceStart = SourceStart;
             this.range = range;
         }
         public override string ToString()
         {
             string result = "";
             for (int i = 0; i < range; i++)
-                result += FirstStart + i + " ";
+                result += DestinationStart + i + " ";
             return result;
         }
     }
@@ -99,7 +99,7 @@ namespace AOC_Day4
     }
     public class Program
     {
-        public static bool isInt(char n)
+        public static bool isInt(string n)
         {
             if (int.TryParse(n, out int asd))
             {
@@ -110,12 +110,24 @@ namespace AOC_Day4
         public static Map read()
         {
             string[] lines = File.ReadAllLines("input.txt");
+            List<List<string>> sections = new List<List<string>>();
+            List<string> section = new List<string>();
+            for (int i = 0; i < lines.Length + 1; i++)
+            {
+                if (i != lines.Length && lines[i] != "")
+                    section.Add(lines[i]);
+                else
+                {
+                    List<string> asdg = new List<string>(section);
+                    sections.Add(asdg);
+                    section.Clear();
+                }
+            }
             //seeds
-            string[] string_seeds = lines[0].Split(" "); //TODO: split file into sg-to-sg sections and revrite the while cycle
+            string[] string_seeds = sections[0][0].Split(" ");
             List<int> seeds = new List<int>();
             for (int i = 1; i < string_seeds.Length; i++)
                 seeds.Add(int.Parse(string_seeds[i]));
-
 
             List<TypeChange> seed_to_soil = new List<TypeChange>();
             List<TypeChange> soil_to_fertilizer = new List<TypeChange>();
@@ -125,55 +137,29 @@ namespace AOC_Day4
             List<TypeChange> temperature_to_humidity = new List<TypeChange>();
             List<TypeChange> humidity_to_location = new List<TypeChange>();
 
-            int j = 2;
-            while (j < lines.Length && lines[j] != "\n" && isInt(lines[j][0]))
+            for (int i = 1; i < sections.Count; i++)
             {
-                string[] string_line = lines[j].Split(" ");
-                TypeChange typeChange = new TypeChange(int.Parse(string_line[0]), int.Parse(string_line[1]), int.Parse(string_line[2]));
-                seed_to_soil.Add(typeChange);
-                j++;
-            }
-            while (j < lines.Length && lines[j] != "\n" && isInt(lines[j][0]))
-            {
-                string[] string_line = lines[j].Split(" ");
-                TypeChange typeChange = new TypeChange(int.Parse(string_line[0]), int.Parse(string_line[1]), int.Parse(string_line[2]));
-                soil_to_fertilizer.Add(typeChange);
-                j++;
-            }
-            while (j < lines.Length && lines[j] != "\n" && isInt(lines[j][0]))
-            {
-                string[] string_line = lines[j].Split(" ");
-                TypeChange typeChange = new TypeChange(int.Parse(string_line[0]), int.Parse(string_line[1]), int.Parse(string_line[2]));
-                fertilizer_to_water.Add(typeChange);
-                j++;
-            }
-            while (j < lines.Length && lines[j] != "\n" && isInt(lines[j][0]))
-            {
-                string[] string_line = lines[j].Split(" ");
-                TypeChange typeChange = new TypeChange(int.Parse(string_line[0]), int.Parse(string_line[1]), int.Parse(string_line[2]));
-                water_to_light.Add(typeChange);
-                j++;
-            }
-            while (j < lines.Length && lines[j] != "\n" && isInt(lines[j][0]))
-            {
-                string[] string_line = lines[j].Split(" ");
-                TypeChange typeChange = new TypeChange(int.Parse(string_line[0]), int.Parse(string_line[1]), int.Parse(string_line[2]));
-                light_to_temperature.Add(typeChange);
-                j++;
-            }
-            while (j < lines.Length && lines[j] != "\n" && isInt(lines[j][0]))
-            {
-                string[] string_line = lines[j].Split(" ");
-                TypeChange typeChange = new TypeChange(int.Parse(string_line[0]), int.Parse(string_line[1]), int.Parse(string_line[2]));
-                temperature_to_humidity.Add(typeChange);
-                j++;
-            }
-            while (j < lines.Length && lines[j] != "\n" && isInt(lines[j][0]))
-            {
-                string[] string_line = lines[j].Split(" ");
-                TypeChange typeChange = new TypeChange(int.Parse(string_line[0]), int.Parse(string_line[1]), int.Parse(string_line[2]));
-                humidity_to_location.Add(typeChange);
-                j++;
+                for (int j = 1; j < sections[i].Count; j++)
+                {
+                    string[] string_typeChange = sections[i][j].Split(" ");
+                    TypeChange typeChange = new TypeChange(int.Parse(string_typeChange[0]), int.Parse(string_typeChange[1]), int.Parse(string_typeChange[2]));
+                    if (sections[i][0].Contains("seed-to-soil"))
+                        seed_to_soil.Add(typeChange);
+                    else if (sections[i][0].Contains("soil-to-fertilizer"))
+                        soil_to_fertilizer.Add(typeChange);
+                    else if (sections[i][0].Contains("fertilizer-to-water"))
+                        fertilizer_to_water.Add(typeChange);
+                    else if (sections[i][0].Contains("water-to-light"))
+                        water_to_light.Add(typeChange);
+                    else if (sections[i][0].Contains("light-to-temperature"))
+                        light_to_temperature.Add(typeChange);
+                    else if (sections[i][0].Contains("temperature-to-humidity"))
+                        temperature_to_humidity.Add(typeChange);
+                    else if (sections[i][0].Contains("humidity-to-location"))
+                        humidity_to_location.Add(typeChange);
+                    else
+                        throw new Exception("error");
+                }
             }
 
             List<int> asd = new List<int>();
@@ -182,7 +168,31 @@ namespace AOC_Day4
         }
         public static void part1(Map list)
         {
+            List<int> seeds = new List<int>(list.seeds);
+            int i = 0;
+            while (i < list.seed_to_soil.Count)
+            {
+                for (int j = 0; j < seeds.Count; j++)
+                {
+                    if (seeds[j] >= list.seed_to_soil[i].SourceStart && seeds[j] <= list.seed_to_soil[i].SourceStart + list.seed_to_soil[i].range - 1)
+                    {
+                        seeds[j] = seeds[j] - (list.seed_to_soil[i].SourceStart - list.seed_to_soil[i].DestinationStart);
+                    }
+                }
+            }
+            while (i < list.soil_to_fertilizer.Count)
+            {
+                for (int j = 0; j < seeds.Count; j++)
+                {
+                    if (seeds[j] >= list.soil_to_fertilizer[i].SourceStart && seeds[j] <= list.soil_to_fertilizer[i].SourceStart + list.soil_to_fertilizer[i].range - 1)
+                    {
+                        seeds[j] = seeds[j] - (list.soil_to_fertilizer[i].SourceStart - list.soil_to_fertilizer[i].DestinationStart);
+                    }
+                }
+            }
+            //TODO: repeate this for the all changees
 
+            System.Console.WriteLine(seeds.Min());
         }
         public static void part2(Map list)
         {
@@ -192,8 +202,8 @@ namespace AOC_Day4
         public static void Main(string[] args)
         {
             Map input = read();
-            input.ToString();
-            // part1(input);
+            // System.Console.WriteLine(input.ToString());
+            part1(input);
             // part2(input);
         }
     }

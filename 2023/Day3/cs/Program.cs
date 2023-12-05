@@ -105,7 +105,7 @@ namespace AOC_Day4
                     }
                     if (string_num_len > 0)
                     {
-                        if (m > 0 && (isSymbol($"{list[l][m - 1]}") || isSymbol($"{list[l + 1][m - 1]}")))
+                        if (m > 0 && (isSymbol($"{list[l][m - 1]}") || isSymbol($"{list[l + 1][m - 1]}") || isSymbol($"{list[l - 1][m - 1]}")))
                             valid = true;
                         if (isSymbol($"{list[l + 1][m]}") || isSymbol($"{list[l - 1][m]}"))
                             valid = true;
@@ -159,7 +159,6 @@ namespace AOC_Day4
                         valid = true;
                     if (n + 1 < list[last_index].Length && (isSymbol($"{list[last_index][n + 1]}") || isSymbol($"{list[last_index - 1][n + 1]}")))
                         valid = true;
-                    System.Console.WriteLine(valid);
                     if (string_num_len > 1 && n + 2 < list[last_index].Length && (isSymbol($"{list[last_index][n + 2]}") || isSymbol($"{list[last_index - 1][n + 2]}")))
                         valid = true;
                     if (string_num_len > 2 && n + 3 < list[last_index].Length && (isSymbol($"{list[last_index][n + 3]}") || isSymbol($"{list[last_index - 1][n + 3]}")))
@@ -185,7 +184,12 @@ namespace AOC_Day4
         }
         public static void part2(List<string> list)
         {
-
+            int result = 0;
+            // first line
+            for (int i = 0; i < list[0].Length; i++)
+            {
+                //TODO: search for * and then check its surroundings
+            }
         }
 
         public static void Main(string[] args)
