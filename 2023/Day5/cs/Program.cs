@@ -25,9 +25,7 @@ namespace AOC_Day4
         }
         public override string ToString()
         {
-            string result = "";
-            for (int i = 0; i < range; i++)
-                result += DestinationStart + i + " ";
+            string result = $"{DestinationStart} {SourceStart} {range}";
             return result;
         }
     }
@@ -178,11 +176,13 @@ namespace AOC_Day4
                     if (seeds[j] >= list.seed_to_soil[i].SourceStart && seeds[j] < list.seed_to_soil[i].SourceStart + list.seed_to_soil[i].range)
                     {
                         seeds[j] = seeds[j] - (list.seed_to_soil[i].SourceStart - list.seed_to_soil[i].DestinationStart);
+                        //TODO: break from while cycle in all whiles from down
+                        break;
                     }
                 }
                 i++;
             }
-            System.Console.WriteLine(string.Join(" ", seeds));
+            // System.Console.WriteLine(string.Join(" ", seeds));
             i = 0;
             while (i < list.soil_to_fertilizer.Count)
             {
@@ -196,7 +196,7 @@ namespace AOC_Day4
                 }
                 i++;
             }
-            System.Console.WriteLine(string.Join(" ", seeds));
+            // System.Console.WriteLine(string.Join(" ", seeds));
             i = 0;
             while (i < list.fertilizer_to_water.Count)
             {
@@ -204,7 +204,7 @@ namespace AOC_Day4
                 {
                     if (seeds[j] >= list.fertilizer_to_water[i].SourceStart && seeds[j] < list.fertilizer_to_water[i].SourceStart + list.fertilizer_to_water[i].range)
                     {
-                        System.Console.WriteLine("asdfsadf");
+                        System.Console.WriteLine(list.fertilizer_to_water[i].ToString());
                         seeds[j] = seeds[j] - (list.fertilizer_to_water[i].SourceStart - list.fertilizer_to_water[i].DestinationStart);
                         break;
                     }
@@ -225,7 +225,7 @@ namespace AOC_Day4
                 }
                 i++;
             }
-            System.Console.WriteLine(string.Join(" ", seeds));
+            // System.Console.WriteLine(string.Join(" ", seeds));
             i = 0;
             while (i < list.light_to_temperature.Count)
             {
@@ -239,7 +239,7 @@ namespace AOC_Day4
                 }
                 i++;
             }
-            System.Console.WriteLine(string.Join(" ", seeds));
+            // System.Console.WriteLine(string.Join(" ", seeds));
             i = 0;
             while (i < list.temperature_to_humidity.Count)
             {
@@ -253,7 +253,7 @@ namespace AOC_Day4
                 }
                 i++;
             }
-            System.Console.WriteLine(string.Join(" ", seeds));
+            // System.Console.WriteLine(string.Join(" ", seeds));
             i = 0;
             while (i < list.humidity_to_location.Count)
             {
