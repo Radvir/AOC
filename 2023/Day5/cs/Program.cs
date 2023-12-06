@@ -238,15 +238,103 @@ namespace AOC_Day4
 
         public static void part2(Map list)
         {
+            List<long> def_seeds = new List<long>(list.seeds);
+            List<List<long>> seed_pairs = new List<List<long>>();
+            List<long> seeds = new List<long>();
+            for (int i = 0; i < def_seeds.Count; i += 2)
+            {
+                List<long> pair = new List<long>();
+                pair.Add(def_seeds[i]);
+                pair.Add(def_seeds[i + 1]);
+                seed_pairs.Add(pair);
 
+            }
+            System.Console.WriteLine("asdf");
+            for (int i = 0; i < seed_pairs.Count; i++)
+            {
+                int j = 0;
+                while (seed_pairs[i][0] + j < seed_pairs[i][0] + seed_pairs[i][1]-1)
+                {
+                    seeds.Add(seed_pairs[i][0] + j);
+                    j++;
+                }
+            }
+            System.Console.WriteLine(seeds.Count);
+
+            for (int i = 0; i < seeds.Count; i++)
+            {
+                for (int j = 0; j < list.seed_to_soil.Count; j++)
+                {
+                    if (seeds[i] >= list.seed_to_soil[j].SourceStart && seeds[i] < list.seed_to_soil[j].SourceStart + list.seed_to_soil[j].range)
+                    {
+                        seeds[i] = seeds[i] - (list.seed_to_soil[j].SourceStart - list.seed_to_soil[j].DestinationStart);
+                        break;
+                    }
+                }
+
+                for (int j = 0; j < list.soil_to_fertilizer.Count; j++)
+                {
+                    if (seeds[i] >= list.soil_to_fertilizer[j].SourceStart && seeds[i] < list.soil_to_fertilizer[j].SourceStart + list.soil_to_fertilizer[j].range)
+                    {
+                        seeds[i] = seeds[i] - (list.soil_to_fertilizer[j].SourceStart - list.soil_to_fertilizer[j].DestinationStart);
+                        break;
+                    }
+                }
+
+                for (int j = 0; j < list.fertilizer_to_water.Count; j++)
+                {
+                    if (seeds[i] >= list.fertilizer_to_water[j].SourceStart && seeds[i] < list.fertilizer_to_water[j].SourceStart + list.fertilizer_to_water[j].range)
+                    {
+                        seeds[i] = seeds[i] - (list.fertilizer_to_water[j].SourceStart - list.fertilizer_to_water[j].DestinationStart);
+                        break;
+                    }
+                }
+
+                for (int j = 0; j < list.water_to_light.Count; j++)
+                {
+                    if (seeds[i] >= list.water_to_light[j].SourceStart && seeds[i] < list.water_to_light[j].SourceStart + list.water_to_light[j].range)
+                    {
+                        seeds[i] = seeds[i] - (list.water_to_light[j].SourceStart - list.water_to_light[j].DestinationStart);
+                        break;
+                    }
+                }
+
+                for (int j = 0; j < list.light_to_temperature.Count; j++)
+                {
+                    if (seeds[i] >= list.light_to_temperature[j].SourceStart && seeds[i] < list.light_to_temperature[j].SourceStart + list.light_to_temperature[j].range)
+                    {
+                        seeds[i] = seeds[i] - (list.light_to_temperature[j].SourceStart - list.light_to_temperature[j].DestinationStart);
+                        break;
+                    }
+                }
+
+                for (int j = 0; j < list.temperature_to_humidity.Count; j++)
+                {
+                    if (seeds[i] >= list.temperature_to_humidity[j].SourceStart && seeds[i] < list.temperature_to_humidity[j].SourceStart + list.temperature_to_humidity[j].range)
+                    {
+                        seeds[i] = seeds[i] - (list.temperature_to_humidity[j].SourceStart - list.temperature_to_humidity[j].DestinationStart);
+                        break;
+                    }
+                }
+
+                for (int j = 0; j < list.humidity_to_location.Count; j++)
+                {
+                    if (seeds[i] >= list.humidity_to_location[j].SourceStart && seeds[i] < list.humidity_to_location[j].SourceStart + list.humidity_to_location[j].range)
+                    {
+                        seeds[i] = seeds[i] - (list.humidity_to_location[j].SourceStart - list.humidity_to_location[j].DestinationStart);
+                        break;
+                    }
+                }
+            }
+            System.Console.WriteLine(seeds.Min());
         }
 
         public static void Main(string[] args)
         {
             Map input = read();
             // System.Console.WriteLine(input.ToString());
-            part1(input);
-            // part2(input);
+            // part1(input);
+            part2(input);
         }
     }
 }
