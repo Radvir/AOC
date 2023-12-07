@@ -107,7 +107,7 @@ namespace AOC_Day4
         }
         public static Map read()
         {
-            string[] lines = File.ReadAllLines("input.txt");
+            string[] lines = File.ReadAllLines("../input.txt");
             List<List<string>> sections = new List<List<string>>();
             List<string> section = new List<string>();
             for (int i = 0; i < lines.Length + 1; i++)
