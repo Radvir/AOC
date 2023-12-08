@@ -188,15 +188,27 @@ namespace AOC_Day4
             // first line
             for (int i = 0; i < list[0].Length; i++)
             {
-                //TODO: search for * and then check its surroundings
+                if (list[0][i].ToString() == "*")
+                {
+                    int num = 0;
+                    if (i>0 && isInt(list[0][i-1].ToString()))
+                    {
+                        if (i-1>0 && isInt(list[0][i-1].ToString()))
+                        {
+                            if (i-2>0 && isInt(list[0][i-1].ToString())) num = int.Parse($"{list[0][i-2]}{list[0][i-1]}{list[0][i]}");
+                            else  num = int.Parse($"{list[0][i-1]}{list[0][i]}");
+                        }
+                    }
+                }
+                //TODO: chekc every other possibilities
             }
         }
 
         public static void Main(string[] args)
         {
             List<string> input = read();
-            part1(input);
-            // part2(input);
+            // part1(input);
+            part2(input);
         }
     }
 }
