@@ -20,7 +20,7 @@ namespace AOC_Day7
             this.cards = cards;
             this.bid = bid;
         }
-        public override string ToString() {return $"{cards} {bid}";}
+        public override string ToString() { return $"{cards} {bid}"; }
     }
     public class Program
     {
@@ -30,11 +30,11 @@ namespace AOC_Day7
 
             for (int i = 0; i < a.cards.Length; i++)
             {
-                if (asd.IndexOf(a.cards[i]) < asd.IndexOf(b.cards[i]))
+                if (asd.IndexOf(a.cards[i]) > asd.IndexOf(b.cards[i]))
                 {
                     return -1;
                 }
-                if (asd.IndexOf(a.cards[i]) > asd.IndexOf(b.cards[i]))
+                if (asd.IndexOf(a.cards[i]) < asd.IndexOf(b.cards[i]))
                 {
                     return 1;
                 }
@@ -74,13 +74,13 @@ namespace AOC_Day7
         public static void part1(List<Hand> list)
         {
             int total_winnings = 0;
-            List<Hand> five_of_a_kind = new List<Hand>(); //index
-            List<Hand> four_of_a_kind = new List<Hand>(); //index
-            List<Hand> full_house = new List<Hand>(); //index
-            List<Hand> three_of_a_kind = new List<Hand>(); //index
-            List<Hand> two_pair = new List<Hand>(); //index
-            List<Hand> one_pair = new List<Hand>(); //index
-            List<Hand> high_card = new List<Hand>(); //index
+            List<Hand> five_of_a_kind = new List<Hand>();
+            List<Hand> four_of_a_kind = new List<Hand>();
+            List<Hand> full_house = new List<Hand>();
+            List<Hand> three_of_a_kind = new List<Hand>();
+            List<Hand> two_pair = new List<Hand>();
+            List<Hand> one_pair = new List<Hand>();
+            List<Hand> high_card = new List<Hand>();
 
             for (int i = 0; i < list.Count; i++)
             {
@@ -112,19 +112,6 @@ namespace AOC_Day7
                 }
                 if (br)
                     continue;
-
-                foreach (string n in occurences.Keys)
-                {
-                    if (occurences[n] == 3)
-                    {
-                        three_of_a_kind.Add(list[i]);
-                        br = true;
-                        break;
-                    }
-                }
-                if (br)
-                    continue;
-
                 foreach (string n in occurences.Keys)
                 {
                     if (occurences[n] == 3)
@@ -138,6 +125,20 @@ namespace AOC_Day7
                                 break;
                             }
                         }
+                    }
+                    if (br)
+                        break;
+                }
+                if (br)
+                    continue;
+
+                foreach (string n in occurences.Keys)
+                {
+                    if (occurences[n] == 3)
+                    {
+                        three_of_a_kind.Add(list[i]);
+                        br = true;
+                        break;
                     }
                 }
                 if (br)
@@ -157,6 +158,8 @@ namespace AOC_Day7
                             }
                         }
                     }
+                    if (br)
+                        break;
                 }
                 if (br)
                     continue;
@@ -196,11 +199,11 @@ namespace AOC_Day7
             hands.Add("one_pair", one_pair);
             hands.Add("high_card", high_card);
 
-            System.Console.WriteLine(string.Join("-", two_pair));
             int rank = 0;
             foreach (string n in hands.Keys)
             {
                 hands[n] = QuickSort(hands[n], comparator);
+                rank += hands[n].Count;
             }
             foreach (string n in hands.Keys)
             {
