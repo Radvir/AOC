@@ -13,6 +13,25 @@ namespace AOC_Day8
 {
     public class Program
     {
+        public static ulong GCD(ulong a, ulong b)
+        {
+            while (b != 0)
+            {
+                ulong temp = b;
+                b = a % b;
+                a = temp;
+            }
+            return a;
+        }
+        public static ulong LCM(ulong a, ulong b) => (a * b) / GCD(a, b);
+
+        static ulong list_lcm(List<int> numbers)
+        {
+            ulong result = (ulong)numbers[0];
+            for (int i = 1; i < numbers.Count; i++)
+                result = LCM(result, (ulong)numbers[i]);
+            return result;
+        }
         public static (string, Dictionary<string, (string, string)>) read()
         {
             string[] lines = File.ReadAllLines("input.txt");
@@ -46,41 +65,27 @@ namespace AOC_Day8
 
         public static void part2(Dictionary<string, (string, string)> list, string pattern)
         {
-            int result = 0;
+            List<int> steps = new List<int>();
             List<string> curr = new List<string>();
             foreach (string n in list.Keys)
                 if (n[2].ToString() == "A") curr.Add(n);
-            bool done = false;
-            int j = 0;
-            while (!done)
+            System.Console.WriteLine(string.Join(" ", curr));
+            for (int i = 0; i < curr.Count; i++)
             {
-                for (int i = 0; i < curr.Count; i++)
+                int step_count = 0;
+                while (curr[i][2].ToString() != "Z")
                 {
-                    if (curr[i][2].ToString() == "Z")
-                        done = true;
-                    else
+                    for (int j = 0; j < pattern.Length; j++)
                     {
-                        done = false;
-                        break;
+                        if (curr[i][2].ToString() == "Z") break;
+                        if (pattern[j].ToString() == "L") curr[i] = list[curr[i]].Item1;
+                        else curr[i] = list[curr[i]].Item2;
+                        step_count++;
                     }
                 }
-                if (done) break;
-
-                for (int i = 0; i < curr.Count; i++)
-                {
-                    if (pattern[j].ToString() == "L")
-                        curr[i] = list[curr[i]].Item1;
-                    else
-                        curr[i] = list[curr[i]].Item2;
-
-                }
-                result++;
-                if (result % 100000000 == 0)
-                    System.Console.WriteLine(result);
-                j++;
-                if (j == pattern.Length) j = 0;
+                steps.Add(step_count);
             }
-            System.Console.WriteLine(result);
+            System.Console.WriteLine(list_lcm(steps));
         }
 
         public static void Main(string[] args)
