@@ -331,6 +331,7 @@ namespace AOC_Day7
                 if (br)
                     continue;
 
+                //TODO: check this check
                 // foreach (string n in occurences.Keys)
                 // {
                 //     if (occurences[n] != 1)
