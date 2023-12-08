@@ -20,12 +20,30 @@ namespace AOC_Day7
             this.cards = cards;
             this.bid = bid;
         }
-        public override string ToString() => $"{cards} {bid}";
+        public override string ToString() {return $"{cards} {bid}";}
     }
     public class Program
     {
-        static List<T> QuickSort<T>(List<T> lista, Func<T, T, int> comparator) => QuickSort(lista, 0, lista.Count - 1, comparator);
-        static List<T> QuickSort<T>(List<T> lista, int e, int v, Func<T, T, int> comparator)
+        public static int comparator(Hand a, Hand b)
+        {
+            string asd = "23456789TJQKA";
+
+            for (int i = 0; i < a.cards.Length; i++)
+            {
+                if (asd.IndexOf(a.cards[i]) < asd.IndexOf(b.cards[i]))
+                {
+                    return -1;
+                }
+                if (asd.IndexOf(a.cards[i]) > asd.IndexOf(b.cards[i]))
+                {
+                    return 1;
+                }
+            }
+            return 0;
+
+        }
+        public static List<T> QuickSort<T>(List<T> lista, Func<T, T, int> comparator) => QuickSort(lista, 0, lista.Count - 1, comparator);
+        public static List<T> QuickSort<T>(List<T> lista, int e, int v, Func<T, T, int> comparator)
         {
             if (e < v)
             {
@@ -47,7 +65,7 @@ namespace AOC_Day7
         }
         public static List<Hand> read()
         {
-            string[] lines = File.ReadAllLines("input.txt");
+            string[] lines = File.ReadAllLines("../input.txt");
             List<Hand> list = new List<Hand>();
             for (int i = 0; i < lines.Length; i++)
                 list.Add(new Hand(lines[i].Split(" ")[0], int.Parse(lines[i].Split(" ")[1])));
@@ -56,13 +74,13 @@ namespace AOC_Day7
         public static void part1(List<Hand> list)
         {
             int total_winnings = 0;
-            List<int> five_of_a_kind = new List<int>(); //index
-            List<int> four_of_a_kind = new List<int>(); //index
-            List<int> full_house = new List<int>(); //index
-            List<int> three_of_a_kind = new List<int>(); //index
-            List<int> two_pair = new List<int>(); //index
-            List<int> one_pair = new List<int>(); //index
-            List<int> high_card = new List<int>(); //index
+            List<Hand> five_of_a_kind = new List<Hand>(); //index
+            List<Hand> four_of_a_kind = new List<Hand>(); //index
+            List<Hand> full_house = new List<Hand>(); //index
+            List<Hand> three_of_a_kind = new List<Hand>(); //index
+            List<Hand> two_pair = new List<Hand>(); //index
+            List<Hand> one_pair = new List<Hand>(); //index
+            List<Hand> high_card = new List<Hand>(); //index
 
             for (int i = 0; i < list.Count; i++)
             {
@@ -78,7 +96,7 @@ namespace AOC_Day7
 
                 if (list[i].cards[0] == list[i].cards[1] && list[i].cards[1] == list[i].cards[2] && list[i].cards[2] == list[i].cards[3] && list[i].cards[3] == list[i].cards[4])
                 {
-                    five_of_a_kind.Add(i);
+                    five_of_a_kind.Add(list[i]);
                     continue;
                 }
 
@@ -87,7 +105,7 @@ namespace AOC_Day7
                 {
                     if (occurences[n] == 4)
                     {
-                        four_of_a_kind.Add(i);
+                        four_of_a_kind.Add(list[i]);
                         br = true;
                         break;
                     }
@@ -99,7 +117,7 @@ namespace AOC_Day7
                 {
                     if (occurences[n] == 3)
                     {
-                        three_of_a_kind.Add(i);
+                        three_of_a_kind.Add(list[i]);
                         br = true;
                         break;
                     }
@@ -115,7 +133,7 @@ namespace AOC_Day7
                         {
                             if (occurences[m] == 2)
                             {
-                                full_house.Add(i);
+                                full_house.Add(list[i]);
                                 br = true;
                                 break;
                             }
@@ -129,11 +147,11 @@ namespace AOC_Day7
                 {
                     if (occurences[n] == 2)
                     {
-                        foreach (string m in occurences.Keys)
+                        foreach (string m in occurences.Keys) //TODO
                         {
                             if (n != m && occurences[m] == 2)
                             {
-                                two_pair.Add(i);
+                                two_pair.Add(list[i]);
                                 br = true;
                                 break;
                             }
@@ -147,7 +165,7 @@ namespace AOC_Day7
                 {
                     if (occurences[n] == 2)
                     {
-                        one_pair.Add(i);
+                        one_pair.Add(list[i]);
                         br = true;
                         break;
                     }
@@ -166,29 +184,30 @@ namespace AOC_Day7
                 if (br)
                     continue;
                 else
-                    high_card.Add(i);
+                    high_card.Add(list[i]);
             }
 
-            Dictionary<string, List<int>> hand_types = new Dictionary<string, List<int>>();
-            hand_types.Add("five_of_a_kind", five_of_a_kind);
-            hand_types.Add("four_of_a_kind", four_of_a_kind);
-            hand_types.Add("full_house", full_house);
-            hand_types.Add("three_of_a_kind", three_of_a_kind);
-            hand_types.Add("two_pair", two_pair);
-            hand_types.Add("one_pair", one_pair);
-            hand_types.Add("high_card", high_card);
-            string card_types = "23456789TJQKA";
+            Dictionary<string, List<Hand>> hands = new Dictionary<string, List<Hand>>();
+            hands.Add("five_of_a_kind", five_of_a_kind);
+            hands.Add("four_of_a_kind", four_of_a_kind);
+            hands.Add("full_house", full_house);
+            hands.Add("three_of_a_kind", three_of_a_kind);
+            hands.Add("two_pair", two_pair);
+            hands.Add("one_pair", one_pair);
+            hands.Add("high_card", high_card);
 
-            //TODO: sort each list
-            //hand_types[n] = QuickSort(hand_types[n], (a, b) => card_types.IndexOf(list[a].cards[0]) - card_types.IndexOf(list[b].cards[0]));
-
-            int rank = 1;
-            foreach (string n in hand_types.Keys)
+            System.Console.WriteLine(string.Join("-", two_pair));
+            int rank = 0;
+            foreach (string n in hands.Keys)
             {
-                for (int j = 0; j < hand_types[n].Count; j++)
+                hands[n] = QuickSort(hands[n], comparator);
+            }
+            foreach (string n in hands.Keys)
+            {
+                for (int i = 0; i < hands[n].Count; i++)
                 {
-                    total_winnings += list[hand_types[n][j]].bid * rank;
-                    rank++;
+                    total_winnings += hands[n][i].bid * rank;
+                    rank--;
                 }
             }
             System.Console.WriteLine(total_winnings);
