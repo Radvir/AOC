@@ -211,7 +211,7 @@ namespace AOC_Day7
 
         public static void part2(List<Hand> list)
         {
-            int total_winnings = 0;
+            long total_winnings = 0;
             List<Hand> five_of_a_kind = new List<Hand>();
             List<Hand> four_of_a_kind = new List<Hand>();
             List<Hand> full_house = new List<Hand>();
@@ -222,6 +222,7 @@ namespace AOC_Day7
 
             for (int i = 0; i < list.Count; i++)
             {
+
                 Dictionary<string, int> occurences = new Dictionary<string, int>();
                 occurences.Add("J", 0);
                 for (int j = 0; j < list[i].cards.Length; j++)
@@ -233,16 +234,20 @@ namespace AOC_Day7
                 }
 
 
+                bool br = false;
                 foreach (string n in occurences.Keys)
                 {
-                    if (occurences[n] == 5 || (n != "J" && occurences[n] + occurences["J"] == 5))
+                    if (occurences[n] == 5 || (n != "J" && occurences[n] + occurences["J"] == 5)) //264985262, 251744177
                     {
                         five_of_a_kind.Add(list[i]);
-                        continue;
+                        br = true;
+                        break;
                     }
                 }
+                if (br)
+                    continue;
 
-                bool br = false;
+
                 foreach (string n in occurences.Keys)
                 {
                     if (occurences[n] == 4 || (n != "J" && occurences[n] + occurences["J"] == 4))
@@ -299,7 +304,7 @@ namespace AOC_Day7
                 if (br)
                     continue;
 
-                foreach (string n in occurences.Keys)
+                foreach (string n in occurences.Keys) //TODO: problem here
                 {
                     if (occurences[n] == 2)
                     {
@@ -309,6 +314,7 @@ namespace AOC_Day7
                             {
                                 two_pair.Add(list[i]);
                                 br = true;
+                        System.Console.WriteLine(list[i]);
                                 break;
                             }
                         }
@@ -330,18 +336,6 @@ namespace AOC_Day7
                 }
                 if (br)
                     continue;
-
-                //TODO: check this check
-                // foreach (string n in occurences.Keys)
-                // {
-                //     if (occurences[n] != 1)
-                //     {
-                //         br = true;
-                //         break;
-                //     }
-                // }
-                // if (br)
-                //     continue;
                 else
                     high_card.Add(list[i]);
             }
