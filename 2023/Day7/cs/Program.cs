@@ -26,6 +26,17 @@ namespace AOC_Day7
     {
         public static int comparator(Hand a, Hand b)
         {
+            string asd = "23456789TJQKA";
+
+            for (int i = 0; i < a.cards.Length; i++)
+            {
+                if (asd.IndexOf(a.cards[i]) > asd.IndexOf(b.cards[i])) return -1;
+                if (asd.IndexOf(a.cards[i]) < asd.IndexOf(b.cards[i])) return 1;
+            }
+            return 0;
+        }
+        public static int comparator2(Hand a, Hand b)
+        {
             string asd = "J23456789TQKA";
 
             for (int i = 0; i < a.cards.Length; i++)
@@ -260,25 +271,13 @@ namespace AOC_Day7
                 if (br)
                     continue;
 
-                foreach (string n in occurences.Keys)
+                foreach (string n in occurences.Keys) // from down here there cant be J
                 {
-                    if (occurences[n] == 3)
+                    if (occurences[n] == 3 || (n != "J" && occurences[n] + occurences["J"] == 3))
                     {
                         foreach (string m in occurences.Keys)
                         {
-                            if (occurences[m] == 2 || (n != "J" && m != "J" && occurences[m] + occurences["J"] == 2)) //m never equals to n
-                            {
-                                full_house.Add(list[i]);
-                                br = true;
-                                break;
-                            }
-                        }
-                    }
-                    else if (n != "J" && occurences[n] + occurences["J"] == 3)
-                    {
-                        foreach (string m in occurences.Keys)
-                        {
-                            if (m != "J" && occurences[m] == 2)
+                            if (m != n && m != "J" && occurences[m] == 2)
                             {
                                 full_house.Add(list[i]);
                                 br = true;
@@ -304,7 +303,7 @@ namespace AOC_Day7
                 if (br)
                     continue;
 
-                foreach (string n in occurences.Keys) //TODO: problem here
+                foreach (string n in occurences.Keys)
                 {
                     if (occurences[n] == 2)
                     {
@@ -314,7 +313,6 @@ namespace AOC_Day7
                             {
                                 two_pair.Add(list[i]);
                                 br = true;
-                        System.Console.WriteLine(list[i]);
                                 break;
                             }
                         }
@@ -352,7 +350,7 @@ namespace AOC_Day7
             int rank = 0;
             foreach (string n in hands.Keys)
             {
-                hands[n] = QuickSort(hands[n], comparator);
+                hands[n] = QuickSort(hands[n], comparator2);
                 rank += hands[n].Count;
             }
             foreach (string n in hands.Keys)
@@ -369,7 +367,9 @@ namespace AOC_Day7
         public static void Main(string[] args)
         {
             List<Hand> input = read();
-            // part1(input);
+            System.Console.WriteLine("Part1:");
+            part1(input);
+            System.Console.WriteLine("Part2:");
             part2(input);
         }
     }
