@@ -13,6 +13,12 @@ namespace AOC_DayX
 {
     public class Program
     {
+        public static (bool, string) isPipe(string s){
+            string pipes = "|-LJ7F";
+            if (pipes.Contains(s))
+                return (true, pipes[pipes.IndexOf(s.ToString())].ToString());
+            return (false, "");
+        }
         public static List<List<string>> read()
         {
             string[] lines = File.ReadAllLines("input.txt");
@@ -26,7 +32,17 @@ namespace AOC_DayX
         }
         public static void part1(List<List<string>> list)
         {
-            
+            (int, int) start_index = (0, 0);
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].IndexOf("S") != -1)
+                {
+                    start_index = (i, list[i].IndexOf("S"));
+                    break;
+                }
+            }
+
+            //TODO: check the starting points surruindings
         }
 
         public static void part2(List<List<string>> list)
