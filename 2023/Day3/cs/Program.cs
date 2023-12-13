@@ -6,11 +6,110 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Data.Common;
+using System.Globalization;
 
 namespace AOC_Day4
 {
     public class Program
     {
+        public static int getInt(List<string> list, int line, int index)
+        {
+            int curr_index = index;
+            while (curr_index > 0 && isInt(list[line][curr_index - 1].ToString()))
+                curr_index--;
+
+
+            int string_num_len = 1;
+            if (curr_index + 1 < list[0].Length && isInt($"{list[0][curr_index + 1]}"))
+            {
+                string_num_len = 2;
+                if (curr_index + 2 < list[0].Length && isInt($"{list[0][curr_index + 2]}"))
+                    string_num_len = 3;
+            }
+            string string_num = "";
+            for (int i = 0; i < string_num_len; i++)
+                string_num += list[line][curr_index + i];
+
+            return int.Parse(string_num);
+        }
+        public static int gearRatio(List<string> list, int line, int index)
+        {
+            int first_num = 0;
+            int second_num = 0;
+            //TODO: some check is wrong
+            if (0 < index) //left side
+            {
+                if (line > 0 && isInt(list[line - 1][index - 1].ToString())) //top left
+                {
+                    int temp = getInt(list, line - 1, index - 1);
+                    if (first_num == 0)
+                        first_num = temp;
+                    else if (second_num == 0 && first_num != temp)
+                        return first_num * temp;
+                }
+                else if (line + 1 > 0 && isInt(list[line + 1][index - 1].ToString())) //down left
+                {
+                    int temp = getInt(list, line + 1, index - 1);
+                    if (first_num == 0)
+                        first_num = temp;
+                    else if (second_num == 0 && first_num != temp)
+                        return first_num * temp;
+                }
+                else if (index > 0 && isInt(list[line][index - 1].ToString())) //left
+                {
+                    int temp = getInt(list, line, index - 1);
+                    if (first_num == 0)
+                        first_num = temp;
+                    else if (second_num == 0 && first_num != temp)
+                        return first_num * temp;
+                }
+            }
+            if (line > 0 && isInt(list[line - 1][index].ToString())) //above
+            {
+                int temp = getInt(list, line - 1, index);
+                if (first_num == 0)
+                    first_num = temp;
+                else if (second_num == 0 && first_num != temp)
+                    return first_num * temp;
+            }
+            if (line < list.Count && isInt(list[line + 1][index].ToString())) //below
+            {
+                int temp = getInt(list, line + 1, index);
+                if (first_num == 0)
+                    first_num = temp;
+                else if (second_num == 0 && first_num != temp)
+                    return first_num * temp;
+            }
+            if (index + 1 < list[0].Length && isInt(list[line][index + 1].ToString())) //right
+            {
+                if (line> 0 && isInt(list[line - 1][index + 1].ToString())) //top right
+                {
+                    int temp = getInt(list, line - 1, index + 1);
+                    if (first_num == 0)
+                        first_num = temp;
+                    else if (second_num == 0 && first_num != temp)
+                        return first_num * temp;
+                }
+                else if (line + 1 > 0 && isInt(list[line + 1][index + 1].ToString())) //down right
+                {
+                    int temp = getInt(list, line + 1, index + 1);
+                    if (first_num == 0)
+                        first_num = temp;
+                    else if (second_num == 0 && first_num != temp)
+                        return first_num * temp;
+                }
+                else if (index + 1 > 0 && isInt(list[line][index + 1].ToString())) //right
+                {
+                    int temp = getInt(list, line, index + 1);
+                    if (first_num == 0)
+                        first_num = temp;
+                    else if (second_num == 0 && first_num != temp)
+                        return first_num * temp;
+                }
+            }
+            System.Console.WriteLine("sdaff");
+            return first_num * second_num;
+        }
         public static bool isInt(string n)
         {
             if (int.TryParse(n, out int asd))
@@ -26,7 +125,7 @@ namespace AOC_Day4
         public static List<string> read()
         {
             List<string> list = new List<string>();
-            string[] lines = File.ReadAllLines("input.txt");
+            string[] lines = File.ReadAllLines("../input.txt");
             for (int i = 0; i < lines.Length; i++)
                 list.Add(lines[i]);
             return list;
@@ -185,23 +284,17 @@ namespace AOC_Day4
         public static void part2(List<string> list)
         {
             int result = 0;
-            // first line
-            for (int i = 0; i < list[0].Length; i++)
+            for (int i = 0; i < list.Count; i++)
             {
-                if (list[0][i].ToString() == "*")
+                for (int j = 0; j < list[i].Length; j++)
                 {
-                    int num = 0;
-                    if (i>0 && isInt(list[0][i-1].ToString()))
+                    if (list[i][j] == '*')
                     {
-                        if (i-1>0 && isInt(list[0][i-1].ToString()))
-                        {
-                            if (i-2>0 && isInt(list[0][i-1].ToString())) num = int.Parse($"{list[0][i-2]}{list[0][i-1]}{list[0][i]}");
-                            else  num = int.Parse($"{list[0][i-1]}{list[0][i]}");
-                        }
+                        result += gearRatio(list, i, j);
                     }
                 }
-                //TODO: chekc every other possibilities
             }
+            System.Console.WriteLine(result);
         }
 
         public static void Main(string[] args)
