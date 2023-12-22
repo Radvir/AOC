@@ -20,10 +20,10 @@ namespace AOC_Day4
 
 
             int string_num_len = 1;
-            if (curr_index + 1 < list[0].Length && isInt($"{list[0][curr_index + 1]}"))
+            if (curr_index + 1 < list[line].Length && isInt($"{list[line][curr_index + 1]}"))
             {
                 string_num_len = 2;
-                if (curr_index + 2 < list[0].Length && isInt($"{list[0][curr_index + 2]}"))
+                if (curr_index + 2 < list[line].Length && isInt($"{list[line][curr_index + 2]}"))
                     string_num_len = 3;
             }
             string string_num = "";
@@ -35,79 +35,92 @@ namespace AOC_Day4
         public static int gearRatio(List<string> list, int line, int index)
         {
             int first_num = 0;
+            int first_num_line = -1;
             int second_num = 0;
-            //TODO: some check is wrong
-            if (0 < index) //left side
+            //left side
+            if (0 < index && line > 0 && isInt(list[line - 1][index - 1].ToString())) //top left
             {
-                if (line > 0 && isInt(list[line - 1][index - 1].ToString())) //top left
+                int temp = getInt(list, line - 1, index - 1);
+                if (first_num == 0)
                 {
-                    int temp = getInt(list, line - 1, index - 1);
-                    if (first_num == 0)
-                        first_num = temp;
-                    else if (second_num == 0 && first_num != temp)
-                        return first_num * temp;
+                    first_num = temp;
+                    first_num_line = line - 1;
                 }
-                else if (line + 1 > 0 && isInt(list[line + 1][index - 1].ToString())) //down left
+            }
+            if (0 < index && line + 1 < list[line].Length && isInt(list[line + 1][index - 1].ToString())) //down left
+            {
+                int temp = getInt(list, line + 1, index - 1);
+                if (first_num == 0)
                 {
-                    int temp = getInt(list, line + 1, index - 1);
-                    if (first_num == 0)
-                        first_num = temp;
-                    else if (second_num == 0 && first_num != temp)
-                        return first_num * temp;
+                    first_num = temp;
+                    first_num_line = line + 1;
                 }
-                else if (index > 0 && isInt(list[line][index - 1].ToString())) //left
+                else if (second_num == 0 && (first_num != temp || line + 1 != first_num_line))
+                { System.Console.WriteLine(first_num + "-" + temp); return first_num * temp; }
+            }
+            if (0 < index && isInt(list[line][index - 1].ToString())) //left
+            {
+                int temp = getInt(list, line, index - 1);
+                if (first_num == 0)
                 {
-                    int temp = getInt(list, line, index - 1);
-                    if (first_num == 0)
-                        first_num = temp;
-                    else if (second_num == 0 && first_num != temp)
-                        return first_num * temp;
+                    first_num = temp;
+                    first_num_line = line;
                 }
+                else if (second_num == 0)
+                    return first_num * temp;
             }
             if (line > 0 && isInt(list[line - 1][index].ToString())) //above
             {
                 int temp = getInt(list, line - 1, index);
                 if (first_num == 0)
+                {
                     first_num = temp;
-                else if (second_num == 0 && first_num != temp)
+                    first_num_line = line - 1;
+                }
+                else if (second_num == 0 && (first_num != temp || line - 1 != first_num_line))
                     return first_num * temp;
             }
             if (line < list.Count && isInt(list[line + 1][index].ToString())) //below
             {
                 int temp = getInt(list, line + 1, index);
                 if (first_num == 0)
+                {
                     first_num = temp;
-                else if (second_num == 0 && first_num != temp)
+                    first_num_line = line + 1;
+                }
+                else if (second_num == 0 && (first_num != temp || line + 1 != first_num_line))
+                {
                     return first_num * temp;
+                }
+            }
+            //right
+            if (index + 1 < list[0].Length && line > 0 && isInt(list[line - 1][index + 1].ToString())) //top right
+            {
+                int temp = getInt(list, line - 1, index + 1);
+                if (first_num == 0)
+                {
+                    first_num = temp;
+                    first_num_line = line - 1;
+                }
+                else if (second_num == 0 && (first_num != temp || line - 1 != first_num_line || list[line - 1][index] == '.'))
+                    {System.Console.WriteLine(first_num + "-" + temp);return first_num * temp;}
+            }
+            if (index + 1 < list[0].Length && line + 1 < list[line].Length && isInt(list[line + 1][index + 1].ToString())) //down right
+            {
+                int temp = getInt(list, line + 1, index + 1);
+                if (first_num == 0)
+                    first_num = temp;
+                else if (second_num == 0 && (first_num != temp || first_num_line != line + 1 || list[line + 1][index] == '.'))
+                    {System.Console.WriteLine(first_num + "-" + temp);return first_num * temp;}
             }
             if (index + 1 < list[0].Length && isInt(list[line][index + 1].ToString())) //right
             {
-                if (line> 0 && isInt(list[line - 1][index + 1].ToString())) //top right
-                {
-                    int temp = getInt(list, line - 1, index + 1);
-                    if (first_num == 0)
-                        first_num = temp;
-                    else if (second_num == 0 && first_num != temp)
-                        return first_num * temp;
-                }
-                else if (line + 1 > 0 && isInt(list[line + 1][index + 1].ToString())) //down right
-                {
-                    int temp = getInt(list, line + 1, index + 1);
-                    if (first_num == 0)
-                        first_num = temp;
-                    else if (second_num == 0 && first_num != temp)
-                        return first_num * temp;
-                }
-                else if (index + 1 > 0 && isInt(list[line][index + 1].ToString())) //right
-                {
-                    int temp = getInt(list, line, index + 1);
-                    if (first_num == 0)
-                        first_num = temp;
-                    else if (second_num == 0 && first_num != temp)
-                        return first_num * temp;
-                }
+                int temp = getInt(list, line, index + 1);
+                if (first_num == 0)
+                    first_num = temp;
+                else if (second_num == 0)
+                    return first_num * temp;
             }
-            System.Console.WriteLine("sdaff");
             return first_num * second_num;
         }
         public static bool isInt(string n)
