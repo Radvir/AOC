@@ -2,3 +2,4 @@
 */*/cs/obj
 */*/cs/bin
 *.sln
+.vs
