@@ -1,0 +1,8 @@
+﻿  Day12.cpp
+C:\Users\varga_zeno\Desktop\dev\aoc\2022\Day12\Day12.cpp(14,22): warning C4834: discarding return value of function with 'nodiscard' attribute
+C:\Users\varga_zeno\Desktop\dev\aoc\2022\Day12\Day12.cpp(32,37): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+  Day12.vcxproj -> C:\Users\varga_zeno\Desktop\dev\aoc\2022\Day12\x64\Debug\Day12.exe
