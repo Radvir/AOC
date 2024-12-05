@@ -1,3 +1,8 @@
 {
-    "dotnet.defaultSolution": "cs.sln"
+    "dotnet.defaultSolution": "cs.sln",
+    "files.associations": {
+        "fstream": "cpp",
+        "iosfwd": "cpp",
+        "xstring": "cpp"
+    }
 }
