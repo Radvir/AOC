@@ -48,6 +48,22 @@ int abc_index(string n)
     return i;
 }
 
+vector<int> find_char(char n, vector<string> list)
+{
+    for (size_t i = 0; i < list.size(); i++)
+    {
+        for (size_t j = 0; j < list[i].size(); j++)
+        {
+            if (n == list[i][j])
+            {
+                return {stoi(to_string(i)), stoi(to_string(j))};
+            }
+            
+        }
+    }
+    return {-1, -1};
+}
+
 int main()
 {
     std::cout << "Hello World!\n";
